@@ -1,3 +1,27 @@
+getgenv().Teams = "Marines" -- Change to "Marines" or "Pirates" to choose team
+
+repeat
+        pcall(function()
+            if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("Main"):FindFirstChild("ChooseTeam") then
+                if (getgenv()).Teams == "Marines" then
+                    for r, v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Marines.Frame.TextButton.Activated)) do
+                        v.Function()
+                    end
+                elseif (getgenv()).Teams == "Pirates" then
+                    for r, v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Pirates.Frame.TextButton.Activated)) do
+                        v.Function()
+                    end
+                else
+                    for r, v in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Marines.Frame.TextButton.Activated)) do
+                        v.Function()
+                    end
+                end
+            end
+        end)
+    until game.Players.LocalPlayer.Team ~= nil
+    if not game:IsLoaded() then
+        game.Loaded:Wait()
+    end
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local EffectContainer = ReplicatedStorage:FindFirstChild("Effect") and ReplicatedStorage.Effect:FindFirstChild("Container")
 if EffectContainer then
