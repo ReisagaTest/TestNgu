@@ -120,6 +120,42 @@ end;function SetHum(obj)
     end;
 end;
 
+spawn(function()
+    while task.wait() do
+        pcall(function()
+            if getgenv().AutoDarkbeard
+            then
+                if not game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
+                    local Noclip = Instance.new("BodyVelocity")
+                    Noclip.Name = "BodyClip"
+                    Noclip.Parent = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+                    Noclip.MaxForce = Vector3.new(100000, 100000, 100000)
+                    Noclip.Velocity = Vector3.new(0, 0, 0)
+                end
+            else
+                local bodyClip = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip")
+                if bodyClip then
+                    bodyClip:Destroy()
+                end
+            end
+        end)
+    end
+end)
+spawn(function()
+    pcall(function()
+        game:GetService("RunService").Stepped:Connect(function()
+            if getgenv().AutoDarkbeard
+            then
+                for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                    end
+                end
+            end
+        end)
+    end)
+end)
+
 local player = game.Players.LocalPlayer
 local function IsEntityAlive(entity)
     if not entity then return false end
