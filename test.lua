@@ -1,44 +1,56 @@
-if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local VirtualUser = game:GetService("VirtualUser")
-local RunService = game:GetService("RunService")
-local HttpService = game:GetService("HttpService")
-local Player = Players.LocalPlayer
-local Remotes = ReplicatedStorage:WaitForChild("Remotes", 5)
-local CommF = Remotes:WaitForChild("CommF_", 5) 
-local PlayerGui = Player:WaitForChild("PlayerGui", 5)
-local MainGui = PlayerGui:WaitForChild("Main", 5)
-
-if getgenv().Team == "Marines" then
-    ReplicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", "Marines")
-elseif getgenv().Team == "Pirates" then
-    ReplicatedStorage.Remotes.CommF_:InvokeServer("SetTeam", "Pirates")
-end
-
-repeat
-    task.wait(1)
-    local chooseTeam = PlayerGui:FindFirstChild("ChooseTeam", true)
-    local uiController = PlayerGui:FindFirstChild("UIController", true)
-
-    if chooseTeam and chooseTeam.Visible and uiController then
-        for _, v in pairs(getgc(true)) do
-            if type(v) == "function" and getfenv(v).script == uiController then
-                local constant = getconstants(v)
-                pcall(function()
-                    if (constant[1] == "Pirates" or constant[1] == "Marines") and #constant == 1 then
-                        if constant[1] == getgenv().Team then
-                            v(getgenv().Team)
-                        end
-                    end
-                end)
-            end
+local EffectContainer = ReplicatedStorage:FindFirstChild("Effect") and ReplicatedStorage.Effect:FindFirstChild("Container")
+if EffectContainer then
+    local Death = EffectContainer:FindFirstChild("Death")
+    if Death then
+        local success, result = pcall(require, Death)
+        if success and type(result) == "function" then
+            hookfunction(result, function() end)
         end
     end
-until player.Team
-
+    local Respawn = EffectContainer:FindFirstChild("Respawn")
+    if Respawn then
+        local success, result = pcall(require, Respawn)
+        if success and type(result) == "function" then
+            hookfunction(result, function() end)
+        end
+    end
+end
+local GuideModule = ReplicatedStorage:FindFirstChild("GuideModule")
+if GuideModule then
+    local success, module = pcall(require, GuideModule)
+    if success and module and type(module.ChangeDisplayedNPC) == "function" then
+        hookfunction(module.ChangeDisplayedNPC, function() end)
+    end
+end
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Util = ReplicatedStorage:WaitForChild("Util", 5)
+if Util then
+    local CameraShaker = Util:FindFirstChild("CameraShaker")
+    if CameraShaker then
+        require(CameraShaker):Stop()
+    end
+end
+local placeId = game.PlaceId
+local worldMap = {
+    [2753915549] = true,
+    [4442272183] = true,
+    [7449423635] = true
+}
+if worldMap[placeId] then
+    if placeId == 2753915549 then
+        World1 = true
+    elseif placeId == 4442272183 then
+        World2 = true
+    elseif placeId == 7449423635 then
+        World3 = true
+    end
+else
+    game.Players.LocalPlayer:Kick("Unsupported Game")
+end
+repeat
+    wait()
+until game.Players.LocalPlayer.Character
 function dist(position)
     return selff:DistanceFromCharacter(position);
 end;function Tp2(xyz)
