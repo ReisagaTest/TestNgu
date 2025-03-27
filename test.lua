@@ -460,7 +460,7 @@ spawn(function()
                     else
                     main_frame.status_update("Status: Start Hop")
                         wait(1);
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/Reisaga/ShinichiiHub/refs/heads/main/ditcum.lua"))();
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/ReisagaTest/abc/refs/heads/main/k.lua"))();
                     end
                 end
             end);
